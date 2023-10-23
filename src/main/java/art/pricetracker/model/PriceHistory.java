@@ -25,7 +25,7 @@ public class PriceHistory {
     @Column(name="scraped_at")
     private Instant scrapedAt;
 
-    public PriceHistory() {}
+    private PriceHistory() {}
 
     public PriceHistory(TrackedProduct trackedProduct, BigDecimal price) {
         this.trackedProduct = trackedProduct;
