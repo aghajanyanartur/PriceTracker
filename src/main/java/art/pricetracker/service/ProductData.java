@@ -28,9 +28,6 @@ public class ProductData {
         this.notify = notify;
     }
 
-    public ProductData() {
-    }
-
     @Override
     public String toString() {
         return "ProductData{" +
