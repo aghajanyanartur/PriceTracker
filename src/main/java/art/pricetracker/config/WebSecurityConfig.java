@@ -17,9 +17,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class WebSecurityConfig {
 
-    @Value("${spring.security.oauth2.client.registration.google.provider}")
-    private String provider;
-
     @Value("${spring.security.oauth2.client.registration.google.client-id}")
     private String clientId;
 
@@ -44,9 +41,8 @@ public class WebSecurityConfig {
     @Value("${spring.security.oauth2.client.registration.google.client-name}")
     private String clientName;
 
-    @Value("${spring.security.oauth2.client.registration.google.scope}")
-    private String scope;
-
+    @Value("${spring.security.oauth2.client.registration.google.provider}")
+    private String provider;
 
     @Bean
     public ClientRegistrationRepository clientRegistrationRepository() {
@@ -60,7 +56,7 @@ public class WebSecurityConfig {
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .redirectUri(redirectUri)
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                .scope(scope)
+                .scope("email", "profile")
                 .authorizationUri(authorizationUri)
                 .tokenUri(tokenUri)
                 .userInfoUri(userInfoUri)
