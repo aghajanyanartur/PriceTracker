@@ -27,4 +27,21 @@ public class ProductData {
         this.available = available;
         this.notify = notify;
     }
+
+    public ProductData() {
+    }
+
+    @Override
+    public String toString() {
+        return "ProductData{" +
+                "name='" + name + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", price=" + price +
+                ", productUrl='" + productUrl + '\'' +
+                ", website='" + website + '\'' +
+                ", quantity='" + quantity + '\'' +
+                ", available=" + available +
+                ", notify=" + notify +
+                '}';
+    }
 }
