@@ -1,0 +1,412 @@
+.App {
+  text-align: center;
+}
+
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+/* 
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+} */
+
+.logout-button {
+  display: flex;
+  justify-content:center;
+  text-align: center;
+  font-weight: bold;
+  background-color: #f3f7fe;
+  color: #07095c;
+  border: none;
+  border-radius: 8px;
+  width: 5%;
+  height: 3em;
+  margin: 1%;
+  padding: 0px;
+  line-height: 280%;
+}
+
+.logout-button:hover {
+  background-color: #3b82f6;
+  box-shadow: 0 0 0 5px #3b83f65f;
+  color: #fff;
+}
+
+#toggleTheme {
+  /* display: inline-block; */
+  display: flex;
+  outline: none;
+  cursor: pointer;
+  font-size: 1.4rem;
+  line-height: 1;
+  border-radius: 50%;
+  transition-property: background-color,border-color,color,box-shadow,filter;
+  transition-duration: .3s;
+  border: 1px solid transparent;
+  letter-spacing: 2px;
+  min-width: 3.6%;
+  height: 7%;
+  text-transform: uppercase;
+  white-space: normal;
+  font-weight: 700;
+  text-align: center;
+  padding: 0;
+  color: #616467;
+  box-shadow: inset 0 0 0 2px #fff;
+  background-color: transparent;
+  align-items: center;
+  justify-content: center;
+  /* position: absolute; */
+  margin: 1%;
+}
+
+.light-theme #toggleTheme {
+  box-shadow: inset 0 0 0 2px #000;
+  justify-content: start;
+}
+
+#toggleTheme:hover{
+  color: #fff;
+  background-color: #616467;
+}
+
+#themeIcon {
+  width: 85%;
+  vertical-align: middle;
+}
+
+.light-theme {
+  background-color: #748f9d;
+  min-height: 30vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: #152530;
+}
+
+/* Dark mode styles */
+.dark-theme {
+  background-color: #152530;
+  min-height: 30vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-header {
+  display: flex;
+  justify-content:space-between;
+  width: 90%;
+  height: fit-content;
+  border-bottom: white solid 3px;
+}
+
+.App-header h4 {
+  margin: 1%;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+/* product view style */
+li {
+  display: flex;
+  margin: 10px 10px 10px 10px;
+  padding: 30px 30px 30px 30px;
+  border-bottom: #ffffff;
+  border-bottom: 2px;
+  border-bottom:solid;
+}
+
+.product-name {
+  width: 50%;
+  text-decoration: none;
+}
+
+.product-price {
+  width: 7%;
+}
+
+/* image style */
+.product-image {
+  max-width: 200px;
+  height: auto;
+}
+
+/* Add button style */
+
+.add-product-button {
+  display: flex;
+  width: 90%;
+  align-items: center;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  /* padding: 0px 20px 0px 20px; */
+}
+
+.add-product-button span {
+  
+  margin-left: 100px;
+  margin-right: 50px;
+}
+
+.add-product-button button {
+  font-weight: bold;
+  background-color: #f3f7fe;
+  color: #07095c;
+  border: none;
+  border-radius: 8px;
+  width: 15%;
+  height: 45px;
+  transition: .3s;
+  margin-left: 100px;
+}
+
+.add-product-button button:hover {
+  background-color: #3b82f6;
+  box-shadow: 0 0 0 5px #3b83f65f;
+  color: #fff;
+}
+
+/* delete button style */
+
+#deleteButton {
+  background-color: #dc3545; /* Red color for delete button */
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 30px 30px 10px 30px;
+  max-height: 60px;
+}
+
+#priceHistoryButton {
+  background-color: #fef104; /* Red color for delete button */
+  color: rgb(176, 0, 0);
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 30px 30px 10px 30px;
+  max-height: 60px;
+}
+
+.product-details button:hover {
+  background-color: #c82333; /* Darker red color on hover */
+}
+
+.originalLink {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* product history pop-up */
+
+.popup {
+  position:fixed;
+  top: 40%;
+  left: 21%;
+  width: 60%;
+  background-color: rgba(40, 100, 100, 0.8);
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  padding: 10px;
+}
+
+.button-group {
+  display: flex;
+  align-items: right;
+  justify-content: end;
+  margin-bottom: 20px;
+  margin-left: 2%;
+  width: 95%;
+}
+
+.button-group button {
+  width: 13%;
+  margin: 0px .3%;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: .7% .5%;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button-group button:hover {
+  background-color: #0056b3;
+}
+
+/* for list mode and grid mode */
+.list-mode .products {
+  display: block;
+  width: 95%; /* Add a consistent width for list mode */
+}
+
+.list-mode .product-name, .list-mode .product-quantity, .list-mode .product-website {
+  border-right: #f3f7fe5a dashed 1px;
+}
+
+.grid-mode .products {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* Three columns in the grid */
+  justify-content: space-between;
+  gap: 0px;
+  width: 95%; /* Add a consistent width for grid mode */
+  height: 100%;
+}
+
+.grid-mode .product-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* background-color: #152530; */
+  border-radius: 5px;
+  border:  #f3f7fe5a solid 0.5px;
+  padding: 5px;
+}
+
+.grid-mode .product-image {
+  max-width: 100%;
+  height: 200px;
+  justify-self: center;
+  margin-bottom: 5px;
+}
+
+.grid-mode .product-name, .grid-mode .product-quantity, .grid-mode .product-website {
+  font-weight: bold;
+  text-decoration: none;
+  width: 100%;
+  margin: 2%;
+}
+
+.grid-mode .product-name {
+  height: 6rem;
+}
+
+.grid-mode .product-website {
+  font-weight: normal;
+  font-style: italic;
+}
+
+.price-and-notify-block {
+
+  display: flex; /* Display elements in a row */
+  align-items:center; /* Vertically align elements */
+}
+
+.price-and-notify-block .product-price {
+  margin-right: 70%; 
+}
+
+.price-and-notify-block label {
+  display: flex; /* Display label and checkbox in a row */
+  align-items: center; /* Vertically align elements within the label */
+}
+
+.price-and-notify-block label input[type="checkbox"] {
+  margin-left: 5px; /* Add margin between the checkbox and the bell icon */
+  transform: scale(2);
+}
+
+.grid-mode #priceHistoryButton {
+  width: 40%;
+  margin: 2px;
+  padding: 2px;
+}
+
+.grid-mode #deleteButton {
+  width: 40%;
+  margin: 2px;
+  padding: 2px;
+}
+
+.search-input {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+   border-radius: 5px;
+   border: 1px solid #00a9fd;
+   width: 40%;
+   height: 40px;
+   margin-right: 2%;
+   font-size:20px;
+}
+
+.not-available {
+  background-color: rgb(202, 49, 49, .5);
+}
+
+/* Styles for product adding forms */
+.add-product-form {
+  width: 60%;
+  display: inline-block;
+  border-radius: 5px;
+  border: solid 1px #ffffff;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.add-product-form.two-columns {
+  width: 70%;
+}
+
+.add-product-form.two-columns .column {
+  display: inline-block;
+  width: 50%;
+  vertical-align: top;
+  padding-top: 10px;
+}
+
+.add-product-form.two-columns .column:last-child {
+  margin-right: 0;
+}
+
+.add-product-form input[type="text"],
+.add-product-form input[type="number"] {
+  width: 70%;
+  padding: 10px;
+  margin-bottom: 4px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #fff;
+}
+
+.add-product-form button[type="submit"],
+.add-product-form button[type="button"] {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px;
+}
+
+.add-product-form button[type="button"] {
+  background-color: #007bff;
+}
+
+.add-product-form button[type="submit"]:hover,
+.add-product-form button[type="button"]:hover {
+  background-color: #0056b3;
+}
+
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
