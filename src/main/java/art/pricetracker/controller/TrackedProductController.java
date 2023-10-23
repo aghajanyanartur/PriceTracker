@@ -35,22 +35,22 @@ public class TrackedProductController {
 
     @PostMapping
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity addProduct(@RequestBody ProductJson productJson, Principal principal) {
+    public ResponseEntity<String> addProduct(@RequestBody ProductJson productJson, Principal principal) {
         var product = new TrackedProduct(productJson);
         product.setUser(userRepo.getReferenceById(principal.getName()));
         productRepo.save(product);
         priceRepo.save(new PriceHistory(product, product.getCurrentPrice()));
-        return ResponseEntity.ok(HttpStatus.CREATED);
+        return ResponseEntity.ok("Product added successfully");
     }
 
     @PostMapping("/custom")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity addProduct(@RequestBody CustomProductJson productJson, Principal principal) {
+    public ResponseEntity<String> addProduct(@RequestBody CustomProductJson productJson, Principal principal) {
         var product = new TrackedProduct(productJson);
         product.setUser(userRepo.getReferenceById(principal.getName()));
         productRepo.save(product);
         priceRepo.save(new PriceHistory(product, product.getCurrentPrice()));
-        return ResponseEntity.ok(HttpStatus.CREATED);
+        return ResponseEntity.ok("Product added successfully");
     }
 
     @GetMapping
@@ -69,31 +69,19 @@ public class TrackedProductController {
     public ResponseEntity<TrackedProduct> getProduct(@PathVariable Long id, Principal principal) {
         Optional<TrackedProduct> found = productRepo.findByUserAndId(userRepo.getReferenceById(principal.getName()), id);
 
-        if(found.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(found.get());
+        return found.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<TrackedProduct> updateProduct(@PathVariable Long id, @RequestBody TrackedProduct updates,
                                                         Principal principal) {
 
-        System.out.println("ENTERED PUT CONTROLLER");
-
         TrackedProduct product = productRepo.findByUserAndId(userRepo.getReferenceById(principal.getName()), id)
                 .orElseThrow(() -> new RuntimeException("Product not found with id " + id));
 
-        System.out.println("EVERYTHING OK YET");
-
         product.setNotify(updates.isNotify());
 
-        System.out.println("THE STATE OF NOTIFY IS --" + updates.isNotify());
-
         TrackedProduct updated = productRepo.save(product);
-
-        System.out.println("SAVED AND ENDED THE CONTROLLER");
 
         return ResponseEntity.ok(updated);
     }
