@@ -1,4 +1,5 @@
 package art.pricetracker.config;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -16,24 +17,55 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class WebSecurityConfig {
 
+    @Value("${spring.security.oauth2.client.registration.google.provider}")
+    private String provider;
+
+    @Value("${spring.security.oauth2.client.registration.google.client-id}")
+    private String clientId;
+
+    @Value("${spring.security.oauth2.client.registration.google.client-secret}")
+    private String clientSecret;
+
+    @Value("${spring.security.oauth2.client.registration.google.redirect-uri}")
+    private String redirectUri;
+
+    @Value("${spring.security.oauth2.client.registration.google.authorization-uri}")
+    private String authorizationUri;
+
+    @Value("${spring.security.oauth2.client.registration.google.token-uri}")
+    private String tokenUri;
+
+    @Value("${spring.security.oauth2.client.registration.google.user-info-uri}")
+    private String userInfoUri;
+
+    @Value("${spring.security.oauth2.client.registration.google.user-name-attribute-name}")
+    private String userNameAttributeName;
+
+    @Value("${spring.security.oauth2.client.registration.google.client-name}")
+    private String clientName;
+
+    @Value("${spring.security.oauth2.client.registration.google.scope}")
+    private String scope;
+
+
     @Bean
     public ClientRegistrationRepository clientRegistrationRepository() {
         return new InMemoryClientRegistrationRepository(getGoogleClientRegistration());
     }
 
     private ClientRegistration getGoogleClientRegistration() {
-        return ClientRegistration.withRegistrationId("google")
-                .clientId("***")
-                .clientSecret("***")
+        return ClientRegistration.withRegistrationId(provider)
+                .clientId(clientId)
+                .clientSecret(clientSecret)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .redirectUri("http://localhost:8080/login/oauth2/code/google")
+                .redirectUri(redirectUri)
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                .scope("email", "profile")
-                .authorizationUri("https://accounts.google.com/o/oauth2/auth")
-                .tokenUri("https://accounts.google.com/o/oauth2/token")
-                .userInfoUri("https://www.googleapis.com/oauth2/v3/userinfo")
-                .userNameAttributeName("sub")
-                .clientName("Google")
+                .scope(scope)
+                .authorizationUri(authorizationUri)
+                .tokenUri(tokenUri)
+                .userInfoUri(userInfoUri)
+                .userNameAttributeName(userNameAttributeName)
+                .clientName(clientName)
                 .build();
     }
 
