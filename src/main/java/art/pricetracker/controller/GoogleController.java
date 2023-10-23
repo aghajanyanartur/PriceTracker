@@ -60,7 +60,7 @@ public class GoogleController {
     }
 
     @GetMapping("/login-check")
-    public ResponseEntity<?> checkLoginStatus(HttpServletRequest request) {
+    public ResponseEntity<Void> checkLoginStatus(HttpServletRequest request) {
         if (request.getUserPrincipal() == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } else {
