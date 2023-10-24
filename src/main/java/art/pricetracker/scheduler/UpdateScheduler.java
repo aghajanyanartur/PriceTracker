@@ -33,8 +33,8 @@ public class UpdateScheduler {
         this.productRepo = productRepo;
     }
 
-    @Scheduled(cron = "0 0 12 * * ?") // daily at 12pm
-//    @Scheduled(fixedRate = 2000) // Update every 10 seconds
+//    @Scheduled(cron = "0 0 12 * * ?") // daily at 12pm
+    @Scheduled(fixedRate = 2000) // Update every 10 seconds
     public void updateProducts() {
 
         List<TrackedProduct> products = productRepo.findByUrlNot("custom.product");
@@ -47,9 +47,11 @@ public class UpdateScheduler {
 
             ProductData data = WebScraperService.scrapeProductPage(url);
 
-            BigDecimal newPrice = data.getPrice();
-            String newQuantity = data.getQuantity();
-            boolean newAvailable = data.getAvailable();
+            // If any of the fields are null, set them to the current values
+            // This is to prevent null pointer exceptions
+            BigDecimal newPrice = (data.getPrice() != null) ? data.getPrice() : product.getCurrentPrice();
+            String newQuantity = (data.getQuantity() != null) ? data.getQuantity() : product.getQuantity();
+            boolean newAvailable = (data.getAvailable() != null) ? data.getAvailable() : product.getAvailable();
 
             boolean priceChanged = !newPrice.equals(product.getCurrentPrice());
             boolean quantityChanged = !newQuantity.equals(product.getQuantity());
