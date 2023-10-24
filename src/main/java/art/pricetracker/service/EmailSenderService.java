@@ -17,7 +17,8 @@ public class EmailSenderService {
     @Value("${spring.mail.receiver}")
     private String receiverUserName;
 
-    private final String messageSubject = "Price changed";
+    @Value("${spring.mail.subject}")
+    private String messageSubject;
 
     private EmailSenderService(JavaMailSender mailSender) {
         this.mailSender = mailSender;
