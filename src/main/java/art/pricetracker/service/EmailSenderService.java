@@ -14,16 +14,19 @@ public class EmailSenderService {
     @Value("${spring.mail.username}")
     private String senderUserName;
 
+    @Value("${spring.mail.receiver}")
+    private String receiverUserName;
+
     private final String messageSubject = "Price changed";
 
     private EmailSenderService(JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }
 
-    public void sendSimpleEmail(String toEmail, String body) {
+    public void sendSimpleEmail(String body) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(senderUserName);
-        message.setTo(toEmail);
+        message.setTo(receiverUserName);
         message.setText(body);
         message.setSubject(messageSubject);
         mailSender.send(message);
