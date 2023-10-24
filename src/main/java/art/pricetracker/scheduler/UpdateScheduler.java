@@ -26,7 +26,7 @@ public class UpdateScheduler {
 
     private final TrackedProductRepository productRepo;
 
-    private final String emailMessageTemplate = "Price changed: %s in %s is now $%s";
+    private final String emailMessageTemplate = "Price changed: %s in %s is now $%s.\nCheck it out at %s\n\n";
 
     @Autowired
     public UpdateScheduler(TrackedProductRepository productRepo) {
@@ -47,40 +47,45 @@ public class UpdateScheduler {
 
             ProductData data = WebScraperService.scrapeProductPage(url);
 
-            // If any of the fields are null, set them to the current values
-            // This is to prevent null pointer exceptions
-            BigDecimal newPrice = (data.getPrice() != null) ? data.getPrice() : product.getCurrentPrice();
-            String newQuantity = (data.getQuantity() != null) ? data.getQuantity() : product.getQuantity();
-            boolean newAvailable = (data.getAvailable() != null) ? data.getAvailable() : product.getAvailable();
+            // Check if the data is null
+            if(data != null) {
 
-            boolean priceChanged = !newPrice.equals(product.getCurrentPrice());
-            boolean quantityChanged = !newQuantity.equals(product.getQuantity());
-            boolean availabilityChanged = newAvailable != product.getAvailable();
+                // If any of the fields are null, set them to the current values
+                // This is to prevent null pointer exceptions
+                BigDecimal newPrice = (data.getPrice() != null) ? data.getPrice() : product.getCurrentPrice();
+                String newQuantity = (data.getQuantity() != null) ? data.getQuantity() : product.getQuantity();
+                boolean newAvailable = (data.getAvailable() != null) ? data.getAvailable() : product.getAvailable();
 
-            if (priceChanged || quantityChanged || availabilityChanged) {
-                if (priceChanged) {
-                    product.setCurrentPrice(newPrice);
+                boolean priceChanged = !newPrice.equals(product.getCurrentPrice());
+                boolean quantityChanged = !newQuantity.equals(product.getQuantity());
+                boolean availabilityChanged = newAvailable != product.getAvailable();
 
-                    // Save the price history only if changes occurred
-                    priceRepo.save(new PriceHistory(product, product.getCurrentPrice()));
+                if (priceChanged || quantityChanged || availabilityChanged) {
+                    if (priceChanged) {
+                        product.setCurrentPrice(newPrice);
 
-                    if (product.isNotify()) {
-                        emailSender.sendSimpleEmail(String.format(emailMessageTemplate, product.getName(), product.getWebsite(), product.getCurrentPrice()));
+                        // Save the price history only if changes occurred
+                        priceRepo.save(new PriceHistory(product, product.getCurrentPrice()));
+
+                        if (product.isNotify()) {
+                            emailSender.sendSimpleEmail(String.format(emailMessageTemplate,
+                                    product.getName(), product.getWebsite(), product.getCurrentPrice(), product.getUrl()));
+                        }
                     }
+
+                    if (quantityChanged) {
+                        product.setQuantity(newQuantity);
+                    }
+
+                    if (availabilityChanged) {
+                        product.setAvailable(newAvailable);
+                    }
+
+                    productsToUpdate.add(product);
+
                 }
-
-                if (quantityChanged) {
-                    product.setQuantity(newQuantity);
-                }
-
-                if (availabilityChanged) {
-                    product.setAvailable(newAvailable);
-                }
-
-                productsToUpdate.add(product);
-
+                productRepo.saveAll(productsToUpdate);
             }
-            productRepo.saveAll(productsToUpdate);
         });
     }
 }
