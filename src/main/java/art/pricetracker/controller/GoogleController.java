@@ -45,10 +45,7 @@ public class GoogleController {
                 restTemplate.exchange(url, HttpMethod.GET, entity, GoogleUserInfo.class);
 
         GoogleUserInfo userInfo = response.getBody();
-        User user = new User();
-        user.setId(userInfo.getId());
-        user.setName(userInfo.getName());
-        user.setEmail(userInfo.getEmail());
+        User user = new User(userInfo);
 
         userRepository.save(user);
 
