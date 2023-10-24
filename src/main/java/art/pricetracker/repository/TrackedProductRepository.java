@@ -16,4 +16,6 @@ public interface TrackedProductRepository extends JpaRepository<TrackedProduct, 
     List<TrackedProduct> findByUser(User user);
 
     Optional<TrackedProduct> findByUserAndId(User user, Long id);
+
+    List<TrackedProduct> findByUrlNot(String url);
 }
