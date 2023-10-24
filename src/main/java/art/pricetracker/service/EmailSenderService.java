@@ -20,10 +20,6 @@ public class EmailSenderService {
     @Value("${spring.mail.subject}")
     private String messageSubject;
 
-    private EmailSenderService(JavaMailSender mailSender) {
-        this.mailSender = mailSender;
-    }
-
     public void sendSimpleEmail(String body) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(senderUserName);
