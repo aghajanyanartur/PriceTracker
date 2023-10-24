@@ -12,6 +12,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -25,6 +26,8 @@ public class PriceUpdateScheduler {
 
     private final TrackedProductRepository productRepo;
 
+    private final String emailMessageTemplate = "Price changed: %s in %s is now $%s";
+
     @Autowired
     public PriceUpdateScheduler(TrackedProductRepository productRepo) {
         this.productRepo = productRepo;
@@ -32,57 +35,50 @@ public class PriceUpdateScheduler {
 
     @Scheduled(cron = "0 0 12 * * ?") // daily at 12pm
 //    @Scheduled(fixedRate = 2000) // Update every 10 seconds
-    public void updatePrices() {
-        List<TrackedProduct> products = productRepo.findAll();
+    public void updateProducts() {
 
-        products.forEach(product -> {
+        List<TrackedProduct> products = productRepo.findByUrlNot("custom.product");
 
-            // Avoid searching for custom products
+        List<TrackedProduct> productsToUpdate = new ArrayList<>();
+
+        products.parallelStream().forEach(product -> {
+
             String url = product.getUrl();
 
-            if(!url.equals("custom.product")) {
-                ProductData data = WebScraperService.scrapeProductPage(url);
+            ProductData data = WebScraperService.scrapeProductPage(url);
 
-                BigDecimal newPrice = data.getPrice();
-                String newQuantity = data.getQuantity();
-                boolean newAvailable = data.getAvailable();
+            BigDecimal newPrice = data.getPrice();
+            String newQuantity = data.getQuantity();
+            boolean newAvailable = data.getAvailable();
 
-                boolean priceChanged = !newPrice.equals(product.getCurrentPrice());
-                boolean quantityChanged = !newQuantity.equals(product.getQuantity());
-                boolean availabilityChanged = newAvailable != product.getAvailable();
+            boolean priceChanged = !newPrice.equals(product.getCurrentPrice());
+            boolean quantityChanged = !newQuantity.equals(product.getQuantity());
+            boolean availabilityChanged = newAvailable != product.getAvailable();
 
-                if (priceChanged || quantityChanged || availabilityChanged) {
-                    if (priceChanged) {
-                        product.setCurrentPrice(newPrice);
+            if (priceChanged || quantityChanged || availabilityChanged) {
+                if (priceChanged) {
+                    product.setCurrentPrice(newPrice);
 
-                        // Save the price history only if changes occurred
-                        priceRepo.save(new PriceHistory(product, product.getCurrentPrice()));
+                    // Save the price history only if changes occurred
+                    priceRepo.save(new PriceHistory(product, product.getCurrentPrice()));
 
-                        if (product.isNotify()) {
-                            String emailMessage = "Price changed: " + product.getName() +
-                                    " in " + product.getWebsite() + " is now $" + product.getCurrentPrice();
-                            emailSender.sendSimpleEmail("donotreply.pricetracker@gmail.com", emailMessage);
-                        }
+                    if (product.isNotify()) {
+                        emailSender.sendSimpleEmail(String.format(emailMessageTemplate, product.getName(), product.getWebsite(), product.getCurrentPrice()));
                     }
-
-                    if (quantityChanged) {
-                        product.setQuantity(newQuantity);
-
-                        if (product.isNotify()) {
-                            String emailMessage = "Price changed: " + product.getName() +
-                                    " in " + product.getWebsite() + " is now $" + product.getCurrentPrice();
-                            emailSender.sendSimpleEmail("donotreply.pricetracker@gmail.com", emailMessage);
-                        }
-                    }
-
-                    if (availabilityChanged) {
-                        product.setAvailable(newAvailable);
-                    }
-
-                    // Save the product only if changes occurred
-                    productRepo.save(product);
                 }
+
+                if (quantityChanged) {
+                    product.setQuantity(newQuantity);
+                }
+
+                if (availabilityChanged) {
+                    product.setAvailable(newAvailable);
+                }
+
+                productsToUpdate.add(product);
+
             }
+            productRepo.saveAll(productsToUpdate);
         });
     }
 }
