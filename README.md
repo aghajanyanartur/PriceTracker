@@ -10,9 +10,9 @@ PriceTracker is a full-stack application to create a personalized list of shoppi
 - **Data Persistence:** Utilize Spring Data with PostgreSQL to store and manage shopping lists and price data. 📚
 
 ## Technologies Used ⚙️
-- Spring Boot <img src="https://github.com/aghajanyanartur/Price-Tracker/assets/111218857/7e5f5e32-3355-4382-872b-1058cf9d6c8f" width="15">
-- Spring Security <img src="https://github.com/aghajanyanartur/Price-Tracker/assets/111218857/126be312-3344-434b-b7ac-0d16fac69bb0" width="13">
-- Spring Data <img src="https://github.com/aghajanyanartur/Price-Tracker/assets/111218857/0247a3db-eadb-4670-ab73-0156acb6a956" width="13">
-- Hibernate <img src="https://github.com/aghajanyanartur/Price-Tracker/assets/111218857/0b397e3d-8ccd-42ef-815c-9a42a7b3023e" width="15">
-- PostgreSQL <img src="https://github.com/aghajanyanartur/Price-Tracker/assets/111218857/4f274c0d-8c77-44b4-9012-ba8e67933a83" width="15">
-- ReactJS <img src="https://github.com/aghajanyanartur/Price-Tracker/assets/111218857/f160e213-54b5-41b6-ab04-98262878490d" width="15">
+- Spring Boot <img src="https://github.com/aghajanyanartur/PriceTracker/assets/111218857/7e5f5e32-3355-4382-872b-1058cf9d6c8f" width="15">
+- Spring Security <img src="https://github.com/aghajanyanartur/PriceTracker/assets/111218857/126be312-3344-434b-b7ac-0d16fac69bb0" width="13">
+- Spring Data <img src="https://github.com/aghajanyanartur/PriceTracker/assets/111218857/0247a3db-eadb-4670-ab73-0156acb6a956" width="13">
+- Hibernate <img src="https://github.com/aghajanyanartur/PriceTracker/assets/111218857/0b397e3d-8ccd-42ef-815c-9a42a7b3023e" width="15">
+- PostgreSQL <img src="https://github.com/aghajanyanartur/PriceTracker/assets/111218857/4f274c0d-8c77-44b4-9012-ba8e67933a83" width="15">
+- ReactJS <img src="https://github.com/aghajanyanartur/PriceTracker/assets/111218857/f160e213-54b5-41b6-ab04-98262878490d" width="15">
