@@ -5,16 +5,14 @@ import lightModeImage from './light_theme_icon.png';
 import darkModeImage from './dark_theme_icon.png';
 
 function App() {
+  // State variables
   const [products, setProducts] = useState([]);
   const [showAddForm, setShowAddForm] = useState(false);
   const [newProductUrl, setNewProductUrl] = useState('');
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showPriceHistory, setShowPriceHistory] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [sortOrder, setSortOrder] = useState({
-    method: 'ascending',
-    field: 'currentPrice',
-  });
+  const [sortOrder, setSortOrder] = useState({method: 'ascending', field: 'currentPrice' });
   const [addedOrderSort, setAddedOrderSort] = useState(false);
   const [mode, setMode] = useState('grid');
   const [theme, setTheme] = useState('dark');
@@ -22,8 +20,6 @@ function App() {
   const [hideUnavailable, setHideUnavailable] = useState(false);
   const [hideButtonText, setHideButtonText] = useState("Hide Unavailable");
   const [notifyState, setNotifyState] = useState({});
-
-  // New state variables for custom product form
   const [showCustomProductForm, setShowCustomProductForm] = useState(false);
   const [newCustomProduct, setNewCustomProduct] = useState({
     image: '',
@@ -32,100 +28,7 @@ function App() {
     price: '',
   });
 
-  const toggleCustomProductForm = () => {
-    setShowCustomProductForm(!showCustomProductForm);
-  };
-
-  const handleLogout = () => {
-    window.location.href = 'http://localhost:8080/logout';
-  };
-
-  const handleCustomProductSubmit = (e) => {
-    e.preventDefault();
-    // Create a new custom product object from the form data
-    const customProduct = { ...newCustomProduct };
-    // Add the custom product to the list of products
-  // Make an HTTP POST request to your backend
-  fetch('/api/products/custom', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(customProduct),
-  })
-    .then((response) => {
-      if (response.ok) {
-        // Product was successfully added on the server
-        // You can update the UI or do any necessary actions here
-        return response.json();
-      } else {
-        // Handle the error if the product couldn't be added
-        throw new Error('Error adding product');
-      }
-    })
-    .then((addedProduct) => {
-      // Update the state with the newly added product
-      setProducts([...products, addedProduct]);
-      // Clear the form and hide it
-      setNewCustomProduct({
-        image: '',
-        name: '',
-        quantity: '',
-        price: '',
-      });
-      setShowCustomProductForm(false);
-      window.location.reload();
-    })
-    .catch((error) => {
-      console.error('Error adding product:', error);
-    });
-  };
-  // ABOVE custom product adding logic
-
-  const toggleTheme = () => {
-    setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
-    console.log(theme);
-  };
-  const toggleMode = () => {
-    setMode(prevMode => (prevMode === 'list' ? 'grid' : 'list'));
-  };
-  const toggleSortOrder = () => {
-    const newMethod = sortOrder.method === 'ascending' ? 'descending' : 'ascending';
-    setSortOrder({ ...sortOrder, method: newMethod });
-  };
-  const toggleAddedOrderSort = () => {
-    setAddedOrderSort((prevAddedOrderSort) => !prevAddedOrderSort);
-  };
-  const toggleHideUnavailable = () => {
-    setHideUnavailable((prevHideUnavailable) => !prevHideUnavailable);
-    setHideButtonText(prevHideButtonText =>
-      prevHideButtonText === "Hide Unavailable" ? "Show Unavailable" : "Hide Unavailable"
-    );
-  };
-  
-  const toggleNotify = (productId) => {
-    // Toggle the notify state for the given product
-    setNotifyState((prevState) => ({
-      ...prevState,
-      [productId]: !prevState[productId] || false,
-    }));
-  };
-  
-  useEffect(() => {
-    // Create an array of product IDs from notifyState
-    const productIds = Object.keys(notifyState);
-  
-    // Iterate through the product IDs and call handleUpdateProduct for each
-    productIds.forEach((productId) => {
-      handleUpdateProduct(productId);
-    });
-  }, [notifyState]);
-
-  const handleViewPriceHistory = (product) => {
-    setSelectedProduct(product);
-    setShowPriceHistory(true);
-  };
-  
+  // Event Handlers
   const handleAddProduct = async () => {
     try {
       const response = await fetch('/api/products', {
@@ -145,14 +48,47 @@ function App() {
       const addedProduct = await response.json();
 
       setProducts([...products, addedProduct]);
-
+      
       setNewProductUrl('');
-
       setShowAddForm(false);
+
       window.location.reload();
     } catch (error) {
       console.error('Error adding product:', error);
     }
+  };
+
+  const handleCustomProductSubmit = (e) => {
+    e.preventDefault();
+    const customProduct = { ...newCustomProduct };
+  fetch('/api/products/custom', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(customProduct),
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Error adding product');
+      }
+    })
+    .then((addedProduct) => {
+      setProducts([...products, addedProduct]);
+      setNewCustomProduct({
+        image: '',
+        name: '',
+        quantity: '',
+        price: '',
+      });
+      setShowCustomProductForm(false);
+      window.location.reload();
+    })
+    .catch((error) => {
+      console.error('Error adding product:', error);
+    });
   };
 
   const handleDeleteProduct = async (productId) => {
@@ -171,7 +107,6 @@ function App() {
     }
   };
 
-  // NOTIFY LOGIC
   const handleUpdateProduct = async (productId) => {
     try {
       const notify = notifyState[productId] || false;
@@ -195,8 +130,21 @@ function App() {
       console.error('Error updating product:', error);
     }
   };
-  // NOTIFY LOGIC
 
+  const handleLogout = () => { window.location.href = 'http://localhost:8080/logout'; };
+  const toggleTheme = () => {setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));};
+  const toggleSortOrder = () => {setSortOrder(prevSortOrder => ({ ...prevSortOrder, method: prevSortOrder.method === 'ascending' ? 'descending' : 'ascending' }));};
+  const toggleAddedOrderSort = () => { setAddedOrderSort((prevAddedOrderSort) => !prevAddedOrderSort); };
+  const toggleHideUnavailable = () => {
+    setHideUnavailable((prevHideUnavailable) => !prevHideUnavailable);
+    setHideButtonText(prevHideButtonText => prevHideButtonText === "Hide Unavailable" ? "Show Unavailable" : "Hide Unavailable");
+  };
+  const handleViewPriceHistory = (product) => { setSelectedProduct(product); setShowPriceHistory(true); };
+  const toggleNotify = (productId) => { setNotifyState((prevState) => ({ ...prevState, [productId]: !prevState[productId] || false, })); };
+  useEffect(() => { const productIds = Object.keys(notifyState);
+    productIds.forEach((productId) => { handleUpdateProduct(productId); });}, [notifyState]);
+  
+  // UseEffect for fetching data
   useEffect(() => {
     document.title = 'Buy List and Price Tracker | created by Artur';
     fetch('/login-check', {
@@ -215,14 +163,13 @@ function App() {
       .then((data) => {
         const sortedProducts = data.sort((a, b) => {
           if (addedOrderSort) {
-            return a.id - b.id;
+            return a.id - b.id; // The id is the order in which the product was added
           } else {
             const modifier = sortOrder.method === 'ascending' ? 1 : -1;
             return modifier * (a[sortOrder.field] - b[sortOrder.field]);
           }
         });
         
-        // Initialize notifyState based on the 'notify' field of products
         const initialNotifyState = {};
         sortedProducts.forEach((product) => {
           initialNotifyState[product.id] = product.notify;
@@ -235,15 +182,16 @@ function App() {
       .catch((error) => {
         console.error('Authentication check failed:', error);
         setIsLoading(false);
+
         window.location.href = 'http://localhost:8080/login';
       });
   }, [sortOrder, addedOrderSort]);
 
-  // Filter products based on search query
   const filteredProducts = products.filter((product) => {
     return product.name?.toLowerCase().includes(searchQuery.toLowerCase()) && (!hideUnavailable || product.available);
   });
-  console.log(notifyState[2952]);
+
+  // Render
   return (
     <div className={`App ${mode}-mode ${theme}-theme`}>
       <header className="App-header">
@@ -264,8 +212,8 @@ function App() {
       {showAddForm && (
         <div className="add-product-form">
           <form onSubmit={e => {
-            e.preventDefault(); // Prevent the default form submission behavior
-            handleAddProduct(); // Call the handleAddProduct function when the form is submitted
+            e.preventDefault();
+            handleAddProduct();
           }}>
             <input
               type="text"
@@ -279,7 +227,6 @@ function App() {
         </div>
       )}
 
-     {/* Form for adding custom product */}
       {showCustomProductForm && (
           <div className="add-product-form two-columns">
             <form onSubmit={handleCustomProductSubmit}>
@@ -347,7 +294,6 @@ function App() {
             <button onClick={toggleHideUnavailable}>{hideButtonText}</button>
             <button onClick={toggleSortOrder}>Sort by price</button>
             <button onClick={toggleAddedOrderSort}>Sort by adding order</button>
-            <button onClick={toggleMode}>List / Grid</button>
           </div>
 
           <ul className={`products ${mode}-view`}>
@@ -378,7 +324,6 @@ function App() {
             ))}
           </ul>
         </div>
- 
     </div>
   );
 }

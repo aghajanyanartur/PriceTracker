@@ -7,12 +7,6 @@
   height: 40vmin;
   pointer-events: none;
 }
-/* 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-} */
 
 .logout-button {
   display: flex;
@@ -227,7 +221,7 @@ li {
 .button-group {
   display: flex;
   align-items: right;
-  justify-content: end;
+  justify-content: flex-end;
   margin-bottom: 20px;
   margin-left: 2%;
   width: 95%;
@@ -275,6 +269,10 @@ li {
   border-radius: 5px;
   border:  #f3f7fe5a solid 0.5px;
   padding: 5px;
+}
+
+.light-theme .product-item {
+  border:  #0001028f solid 0.5px;
 }
 
 .grid-mode .product-image {
@@ -400,7 +398,6 @@ li {
 .add-product-form button[type="button"]:hover {
   background-color: #0056b3;
 }
-
 
 @keyframes App-logo-spin {
   from {
