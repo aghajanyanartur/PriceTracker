@@ -34,7 +34,6 @@ public class TrackedProductController {
 
 
     @PostMapping
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> addProduct(@RequestBody ProductJson productJson, Principal principal) {
         var product = new TrackedProduct(productJson);
         product.setUser(userRepo.getReferenceById(principal.getName()));
@@ -44,7 +43,6 @@ public class TrackedProductController {
     }
 
     @PostMapping("/custom")
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> addProduct(@RequestBody CustomProductJson productJson, Principal principal) {
         var product = new TrackedProduct(productJson);
         product.setUser(userRepo.getReferenceById(principal.getName()));
