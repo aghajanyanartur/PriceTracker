@@ -2,7 +2,6 @@ package art.pricetracker.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,10 +22,13 @@ public class User {
     @JsonManagedReference
     private List<TrackedProduct> trackedProducts;
 
-    public User(GoogleUserInfo userInfo) {
-        this.id = userInfo.getId();
-        this.name = userInfo.getName();
-        this.email = userInfo.getEmail();
+
+    // TODO: 2021-10-13 00:00:00.000000
+    //  This constructor is only for testing purposes.
+    public User() {
+        this.id = String.valueOf(System.currentTimeMillis());
+        this.name = "hardcoded user name";
+        this.email = "hardcoded email";
         trackedProducts = new ArrayList<>();
     }
 }
