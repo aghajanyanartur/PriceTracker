@@ -1,6 +1,3 @@
-build/resources/main/application.properties
-src/main/resources/application.properties
-
 HELP.md
 .gradle
 build/
