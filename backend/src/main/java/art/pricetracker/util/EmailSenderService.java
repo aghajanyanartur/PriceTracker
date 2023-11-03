@@ -1,4 +1,4 @@
-package art.pricetracker.service;
+package art.pricetracker.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

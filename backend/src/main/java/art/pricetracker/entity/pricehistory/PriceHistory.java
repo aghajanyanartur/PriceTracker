@@ -1,5 +1,6 @@
-package art.pricetracker.model;
+package art.pricetracker.entity.pricehistory;
 
+import art.pricetracker.entity.trackedproduct.TrackedProduct;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -18,7 +19,7 @@ public class PriceHistory {
     @ManyToOne
     @JoinColumn(name="tracked_product_id")
     @JsonBackReference
-    private TrackedProduct trackedProduct;
+    private TrackedProduct product;
 
     private BigDecimal price;
 
@@ -27,9 +28,9 @@ public class PriceHistory {
 
     private PriceHistory() {}
 
-    public PriceHistory(TrackedProduct trackedProduct, BigDecimal price) {
-        this.trackedProduct = trackedProduct;
-        this.price = price;
+    public PriceHistory(TrackedProduct product) {
+        this.product = product;
+        this.price = product.getCurrentPrice();
     }
 
     @PrePersist

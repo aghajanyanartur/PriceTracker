@@ -1,4 +1,4 @@
-package art.pricetracker.service;
+package art.pricetracker.entity.trackedproduct;
 
 import lombok.Data;
 

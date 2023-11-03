@@ -1,23 +1,20 @@
 package art.pricetracker.controller;
 
-import art.pricetracker.model.CustomProductJson;
-import art.pricetracker.model.PriceHistory;
-import art.pricetracker.model.ProductJson;
-import art.pricetracker.model.TrackedProduct;
-import art.pricetracker.repository.PriceHistoryRepository;
-import art.pricetracker.repository.TrackedProductRepository;
-import art.pricetracker.repository.UserRepository;
-import art.pricetracker.service.UserService;
+import art.pricetracker.entity.pricehistory.PriceHistoryService;
+import art.pricetracker.entity.trackedproduct.CustomProductJson;
+import art.pricetracker.entity.trackedproduct.ProductJson;
+import art.pricetracker.entity.trackedproduct.TrackedProduct;
+import art.pricetracker.entity.trackedproduct.TrackedProductService;
+import art.pricetracker.entity.pricehistory.PriceHistory;
+import art.pricetracker.entity.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/products")
@@ -25,10 +22,10 @@ import java.util.Optional;
 public class TrackedProductController {
 
     @Autowired
-    private TrackedProductRepository productRepo;
+    private TrackedProductService productService;
 
     @Autowired
-    private PriceHistoryRepository priceRepo;
+    private PriceHistoryService priceService;
 
     @Autowired
     private UserService userService;
@@ -38,8 +35,8 @@ public class TrackedProductController {
     public ResponseEntity<?> addProduct(@RequestBody ProductJson productJson, Principal principal) {
         var product = new TrackedProduct(productJson);
         product.setUser(userService.getByName(principal.getName()));
-        productRepo.save(product);
-        priceRepo.save(new PriceHistory(product, product.getCurrentPrice()));
+        productService.create(product);
+        priceService.create(new PriceHistory(product));
         return ResponseEntity.ok(HttpStatus.CREATED);
     }
 
@@ -47,40 +44,37 @@ public class TrackedProductController {
     public ResponseEntity<?> addProduct(@RequestBody CustomProductJson productJson, Principal principal) {
         var product = new TrackedProduct(productJson);
         product.setUser(userService.getByName(principal.getName()));
-        productRepo.save(product);
-        priceRepo.save(new PriceHistory(product, product.getCurrentPrice()));
+        productService.create(product);
+        priceService.create(new PriceHistory(product));
         return ResponseEntity.ok(HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<List<TrackedProduct>> getProducts(Principal principal) {
-        List<TrackedProduct> products = productRepo.findByUser(userService.getByName(principal.getName()));
+        List<TrackedProduct> products = productService.getByUser(userService.getByName(principal.getName()));
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Access-Control-Allow-Origin", "http://localhost:3000");
 
-        return ResponseEntity.ok()
-                .headers(headers)
-                .body(products);
+        return ResponseEntity.ok().headers(headers).body(products);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<TrackedProduct> getProduct(@PathVariable Long id, Principal principal) {
-        Optional<TrackedProduct> found = productRepo.findByUserAndId(userService.getByName(principal.getName()), id);
+        TrackedProduct found = productService.getByUserAndId(userService.getByName(principal.getName()), id);
 
-        return found.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return ResponseEntity.ok(found);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<TrackedProduct> updateProduct(@PathVariable Long id, @RequestBody TrackedProduct updates,
                                                         Principal principal) {
 
-        TrackedProduct product = productRepo.findByUserAndId(userService.getByName(principal.getName()), id)
-                .orElseThrow(() -> new RuntimeException("Product not found with id " + id));
+        TrackedProduct product = productService.getByUserAndId(userService.getByName(principal.getName()), id);
 
         product.setNotify(updates.isNotify());
 
-        TrackedProduct updated = productRepo.save(product);
+        TrackedProduct updated = productService.create(product);
 
         return ResponseEntity.ok(updated);
     }
@@ -88,17 +82,8 @@ public class TrackedProductController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id, Principal principal) {
 
-        TrackedProduct product = productRepo.findByUserAndId(userService.getByName(principal.getName()), id)
-                .orElseThrow(() -> new RuntimeException("Product not found with id " + id));
-
-        productRepo.delete(product);
+        productService.delete(id);
 
         return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/search")
-    public List<TrackedProduct> searchProducts(@RequestParam String query, Principal principal) {
-
-        return productRepo.findByUserAndNameContainingIgnoreCase(userService.getByName(principal.getName()), query);
     }
 }

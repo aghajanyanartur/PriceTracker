@@ -1,4 +1,4 @@
-package art.pricetracker.model;
+package art.pricetracker.entity.trackedproduct;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

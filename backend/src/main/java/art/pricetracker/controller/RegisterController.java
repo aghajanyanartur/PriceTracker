@@ -1,7 +1,7 @@
 package art.pricetracker.controller;
 
-import art.pricetracker.dto.UserJson;
-import art.pricetracker.service.UserService;
+import art.pricetracker.entity.user.UserJson;
+import art.pricetracker.entity.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

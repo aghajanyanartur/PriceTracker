@@ -1,12 +1,10 @@
-package art.pricetracker.scheduler;
+package art.pricetracker.util;
 
-import art.pricetracker.model.PriceHistory;
-import art.pricetracker.model.TrackedProduct;
-import art.pricetracker.repository.PriceHistoryRepository;
-import art.pricetracker.repository.TrackedProductRepository;
-import art.pricetracker.service.EmailSenderService;
-import art.pricetracker.service.ProductData;
-import art.pricetracker.service.WebScraperService;
+import art.pricetracker.entity.pricehistory.PriceHistory;
+import art.pricetracker.entity.pricehistory.PriceHistoryService;
+import art.pricetracker.entity.trackedproduct.TrackedProduct;
+import art.pricetracker.entity.trackedproduct.TrackedProductRepository;
+import art.pricetracker.entity.trackedproduct.ProductData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -19,7 +17,7 @@ import java.util.List;
 public class UpdateScheduler {
 
     @Autowired
-    private PriceHistoryRepository priceRepo;
+    private PriceHistoryService priceService;
 
     @Autowired
     private EmailSenderService emailSender;
@@ -33,8 +31,8 @@ public class UpdateScheduler {
         this.productRepo = productRepo;
     }
 
-//    @Scheduled(cron = "0 0 12 * * ?") // daily at 12pm
-    @Scheduled(fixedRate = 2000) // Update every 10 seconds
+    @Scheduled(cron = "0 0 12 * * ?") // daily at 12pm
+//    @Scheduled(fixedRate = 2000) // Update every 10 seconds
     public void updateProducts() {
 
         List<TrackedProduct> products = productRepo.findByUrlNot("custom.product");
@@ -65,7 +63,7 @@ public class UpdateScheduler {
                         product.setCurrentPrice(newPrice);
 
                         // Save the price history only if changes occurred
-                        priceRepo.save(new PriceHistory(product, product.getCurrentPrice()));
+                        priceService.create(new PriceHistory(product));
 
                         if (product.isNotify()) {
                             emailSender.sendSimpleEmail(String.format(emailMessageTemplate,

@@ -1,5 +1,6 @@
-package art.pricetracker.service;
+package art.pricetracker.util;
 
+import art.pricetracker.entity.trackedproduct.ProductData;
 import org.springframework.stereotype.Service;
 
 import java.net.MalformedURLException;

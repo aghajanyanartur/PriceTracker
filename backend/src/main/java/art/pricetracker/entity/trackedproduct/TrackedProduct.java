@@ -1,6 +1,8 @@
-package art.pricetracker.model;
+package art.pricetracker.entity.trackedproduct;
 
-import art.pricetracker.service.WebScraperService;
+import art.pricetracker.entity.user.User;
+import art.pricetracker.entity.pricehistory.PriceHistory;
+import art.pricetracker.util.WebScraperService;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -35,7 +37,7 @@ public class TrackedProduct {
 
     private boolean notify;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy="trackedProduct")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy="product")
     @JsonManagedReference
     private List<PriceHistory> priceHistory = new ArrayList<>();
 

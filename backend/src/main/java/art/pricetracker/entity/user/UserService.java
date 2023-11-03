@@ -1,8 +1,5 @@
-package art.pricetracker.service;
+package art.pricetracker.entity.user;
 
-import art.pricetracker.dto.UserJson;
-import art.pricetracker.model.User;
-import art.pricetracker.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;

@@ -1,4 +1,4 @@
-package art.pricetracker.dto;
+package art.pricetracker.entity.user;
 
 import lombok.Data;
 

@@ -1,12 +1,10 @@
-package art.pricetracker.model;
+package art.pricetracker.entity.user;
 
-import art.pricetracker.dto.UserJson;
+import art.pricetracker.entity.trackedproduct.TrackedProduct;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;

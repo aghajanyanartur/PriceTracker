@@ -1,5 +1,6 @@
-package art.pricetracker.service;
+package art.pricetracker.util;
 
+import art.pricetracker.entity.trackedproduct.ProductData;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

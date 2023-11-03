@@ -1,7 +1,6 @@
-package art.pricetracker.repository;
+package art.pricetracker.entity.trackedproduct;
 
-import art.pricetracker.model.TrackedProduct;
-import art.pricetracker.model.User;
+import art.pricetracker.entity.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
