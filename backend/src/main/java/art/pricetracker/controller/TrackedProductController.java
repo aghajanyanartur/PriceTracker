@@ -7,6 +7,7 @@ import art.pricetracker.model.TrackedProduct;
 import art.pricetracker.repository.PriceHistoryRepository;
 import art.pricetracker.repository.TrackedProductRepository;
 import art.pricetracker.repository.UserRepository;
+import art.pricetracker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -30,13 +31,13 @@ public class TrackedProductController {
     private PriceHistoryRepository priceRepo;
 
     @Autowired
-    private UserRepository userRepo;
+    private UserService userService;
 
 
     @PostMapping
     public ResponseEntity<?> addProduct(@RequestBody ProductJson productJson, Principal principal) {
         var product = new TrackedProduct(productJson);
-        product.setUser(userRepo.getReferenceById(principal.getName()));
+        product.setUser(userService.getByName(principal.getName()));
         productRepo.save(product);
         priceRepo.save(new PriceHistory(product, product.getCurrentPrice()));
         return ResponseEntity.ok(HttpStatus.CREATED);
@@ -45,7 +46,7 @@ public class TrackedProductController {
     @PostMapping("/custom")
     public ResponseEntity<?> addProduct(@RequestBody CustomProductJson productJson, Principal principal) {
         var product = new TrackedProduct(productJson);
-        product.setUser(userRepo.getReferenceById(principal.getName()));
+        product.setUser(userService.getByName(principal.getName()));
         productRepo.save(product);
         priceRepo.save(new PriceHistory(product, product.getCurrentPrice()));
         return ResponseEntity.ok(HttpStatus.CREATED);
@@ -53,7 +54,7 @@ public class TrackedProductController {
 
     @GetMapping
     public ResponseEntity<List<TrackedProduct>> getProducts(Principal principal) {
-        List<TrackedProduct> products = productRepo.findByUser(userRepo.getReferenceById(principal.getName()));
+        List<TrackedProduct> products = productRepo.findByUser(userService.getByName(principal.getName()));
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Access-Control-Allow-Origin", "http://localhost:3000");
@@ -65,7 +66,7 @@ public class TrackedProductController {
 
     @GetMapping("/{id}")
     public ResponseEntity<TrackedProduct> getProduct(@PathVariable Long id, Principal principal) {
-        Optional<TrackedProduct> found = productRepo.findByUserAndId(userRepo.getReferenceById(principal.getName()), id);
+        Optional<TrackedProduct> found = productRepo.findByUserAndId(userService.getByName(principal.getName()), id);
 
         return found.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -74,7 +75,7 @@ public class TrackedProductController {
     public ResponseEntity<TrackedProduct> updateProduct(@PathVariable Long id, @RequestBody TrackedProduct updates,
                                                         Principal principal) {
 
-        TrackedProduct product = productRepo.findByUserAndId(userRepo.getReferenceById(principal.getName()), id)
+        TrackedProduct product = productRepo.findByUserAndId(userService.getByName(principal.getName()), id)
                 .orElseThrow(() -> new RuntimeException("Product not found with id " + id));
 
         product.setNotify(updates.isNotify());
@@ -87,7 +88,7 @@ public class TrackedProductController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id, Principal principal) {
 
-        TrackedProduct product = productRepo.findByUserAndId(userRepo.getReferenceById(principal.getName()), id)
+        TrackedProduct product = productRepo.findByUserAndId(userService.getByName(principal.getName()), id)
                 .orElseThrow(() -> new RuntimeException("Product not found with id " + id));
 
         productRepo.delete(product);
@@ -98,6 +99,6 @@ public class TrackedProductController {
     @GetMapping("/search")
     public List<TrackedProduct> searchProducts(@RequestParam String query, Principal principal) {
 
-        return productRepo.findByUserAndNameContainingIgnoreCase(userRepo.getReferenceById(principal.getName()), query);
+        return productRepo.findByUserAndNameContainingIgnoreCase(userService.getByName(principal.getName()), query);
     }
 }
