@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PriceHistoryPopup from './PriceHistoryPopup';
-import './App.css';
-import lightModeImage from './light_theme_icon.png';
-import darkModeImage from './dark_theme_icon.png';
+import './styles/App.css';
+import lightModeImage from './images/light_theme_icon.png';
+import darkModeImage from './images/dark_theme_icon.png';
 
 function App() {
   // State variables
