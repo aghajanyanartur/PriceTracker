@@ -13,8 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
+//@Data
 @NoArgsConstructor
+@Getter
+@Setter
 public class TrackedProduct {
 
     @Id

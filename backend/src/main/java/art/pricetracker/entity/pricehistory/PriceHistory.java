@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 
 @Entity
-@Data
+//@Data
 public class PriceHistory {
 
     @Id

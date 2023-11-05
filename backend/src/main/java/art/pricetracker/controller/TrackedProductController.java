@@ -7,10 +7,12 @@ import art.pricetracker.entity.trackedproduct.TrackedProduct;
 import art.pricetracker.entity.trackedproduct.TrackedProductService;
 import art.pricetracker.entity.pricehistory.PriceHistory;
 import art.pricetracker.entity.user.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -19,6 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/products")
 @CrossOrigin(origins = "http://localhost:3000")
+@Slf4j
 public class TrackedProductController {
 
     @Autowired
@@ -50,8 +53,18 @@ public class TrackedProductController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     public ResponseEntity<List<TrackedProduct>> getProducts(Principal principal) {
+        log.warn("Entered getProducts method,,,, Principal: " + principal);
+
         List<TrackedProduct> products = productService.getByUser(userService.getByName(principal.getName()));
+
+        log.warn("Products: " + products);
+
+        products.forEach(product -> {
+            System.out.println("Product: " + product.getName());
+            System.out.println("Notify: " + product.isNotify());
+        });
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Access-Control-Allow-Origin", "http://localhost:3000");
