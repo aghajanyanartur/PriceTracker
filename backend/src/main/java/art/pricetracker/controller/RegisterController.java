@@ -36,7 +36,7 @@ public class RegisterController {
         // TODO: 2021-10-13 00:00:00.000000
         // Change return type to ResponseEntity
 
-        log.warn("Entered isAuthenticated method,,,, Principal: " + principal);
+        log.warn("Entered isAuthenticated method");
         return principal != null ? ResponseEntity.ok(HttpStatus.OK) : ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
     }
 
@@ -49,7 +49,6 @@ public class RegisterController {
         request.getSession().setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
 
         return ResponseEntity.ok(HttpStatus.OK);
-
     }
 
     @PostMapping("/logout")
@@ -60,6 +59,5 @@ public class RegisterController {
         request.getSession().setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
 
         return ResponseEntity.ok(HttpStatus.OK);
-
     }
 }

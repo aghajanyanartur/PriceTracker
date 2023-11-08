@@ -21,7 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/products")
 @CrossOrigin(origins = "http://localhost:3000")
-@Slf4j
+
 public class TrackedProductController {
 
     @Autowired
@@ -55,16 +55,7 @@ public class TrackedProductController {
     @GetMapping
     @PreAuthorize("hasAuthority('ROLE_USER')")
     public ResponseEntity<List<TrackedProduct>> getProducts(Principal principal) {
-        log.warn("Entered getProducts method,,,, Principal: " + principal);
-
         List<TrackedProduct> products = productService.getByUser(userService.getByName(principal.getName()));
-
-        log.warn("Products: " + products);
-
-        products.forEach(product -> {
-            System.out.println("Product: " + product.getName());
-            System.out.println("Notify: " + product.isNotify());
-        });
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Access-Control-Allow-Origin", "http://localhost:3000");
@@ -77,6 +68,17 @@ public class TrackedProductController {
         TrackedProduct found = productService.getByUserAndId(userService.getByName(principal.getName()), id);
 
         return ResponseEntity.ok(found);
+    }
+
+    @GetMapping("/{id}/price-history")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public ResponseEntity<List<PriceHistory>> getPriceHistory(@PathVariable Long id, Principal principal) {
+        var priceHistory = productService.getByUserAndId(userService.getByName(principal.getName()), id).getPriceHistory();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Access-Control-Allow-Origin", "http://localhost:3000");
+
+        return ResponseEntity.ok().headers(headers).body(priceHistory);
     }
 
     @PutMapping("/{id}")

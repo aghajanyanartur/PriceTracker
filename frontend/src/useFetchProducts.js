@@ -2,14 +2,15 @@ import { useEffect } from 'react';
 
 const useFetchProducts = () => {
   useEffect(() => {
-      document.title = 'Buy List and Price Tracker | created by Artur';
+    document.title = 'Buy List and Price Tracker | created by Artur';
+    if (!window.location.pathname.endsWith('/login')) {
       fetch('/api/authenticated', {
         method: 'POST',
         credentials: 'include',
       })
         .then((response) => {
-          if (response.redirected || response.ok) {
-            // return fetch('/api/products');
+          if (response.ok) {
+
           } else if (response.status === 401) {
             throw new Error('User not authenticated');
           } else {
@@ -19,11 +20,10 @@ const useFetchProducts = () => {
         })
         .catch((error) => {
           console.error('Authentication check failed:', error);
-          if(!window.location.pathname.endsWith('/login')) {
-            window.location.href = '/login';
-          }
+          window.location.href = '/login';
         });
+    }
   }, []);
-}
+};
 
 export default useFetchProducts;

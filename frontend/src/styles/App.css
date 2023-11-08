@@ -28,6 +28,7 @@
   background-color: #3b82f6;
   box-shadow: 0 0 0 5px #3b83f65f;
   color: #fff;
+  cursor: pointer;
 }
 
 #toggleTheme {
@@ -43,7 +44,8 @@
   border: 1px solid transparent;
   letter-spacing: 2px;
   min-width: 3.6%;
-  height: 7%;
+  /* height: 7%; */
+  width: 4%;
   text-transform: uppercase;
   white-space: normal;
   font-weight: 700;
@@ -117,24 +119,23 @@ li {
   display: flex;
   margin: 10px 10px 10px 10px;
   padding: 30px 30px 30px 30px;
-  border-bottom: #ffffff;
-  border-bottom: 2px;
-  border-bottom:solid;
+
 }
 
 .product-name {
   width: 50%;
   text-decoration: none;
+  font-size: 0.5em;
+  text-align: left;
 }
 
-.product-price {
-  width: 7%;
-}
+
 
 /* image style */
 .product-image {
   max-width: 200px;
   height: auto;
+  border-radius: 0.2em;
 }
 
 /* Add button style */
@@ -170,30 +171,59 @@ li {
   background-color: #3b82f6;
   box-shadow: 0 0 0 5px #3b83f65f;
   color: #fff;
+  cursor: pointer;
 }
 
-/* delete button style */
+
+
+.bell-checkbox {
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.bell-checkbox .bell-icon {
+  font-size: 0.8em;
+  border-radius: 35%;
+  border: 3px solid tomato;
+  background-color: tomato;
+
+}
+
+.notify-checkbox:checked + .bell-icon {
+  border-color: rgb(0, 200, 0);
+  background-color: rgb(0, 200, 0);
+}
+.notify-checkbox-block {
+  position: absolute;
+  margin-left: 14%;
+
+}
+.price-history-and-delete-button-block {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 0px;
+  padding: 0px;
+}
+
+.price-history-and-delete-button-block button {
+  width: 49%;
+  margin: 0px;
+  padding: 0.4em 0em;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
 
 #deleteButton {
   background-color: #dc3545; /* Red color for delete button */
   color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  margin: 30px 30px 10px 30px;
-  max-height: 60px;
 }
 
 #priceHistoryButton {
   background-color: #fef104; /* Red color for delete button */
   color: rgb(176, 0, 0);
-  border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  margin: 30px 30px 10px 30px;
-  max-height: 60px;
 }
 
 .product-details button:hover {
@@ -248,10 +278,6 @@ li {
   width: 95%; /* Add a consistent width for list mode */
 }
 
-.list-mode .product-name, .list-mode .product-quantity, .list-mode .product-website {
-  border-right: #f3f7fe5a dashed 1px;
-}
-
 .grid-mode .products {
   display: grid;
   grid-template-columns: repeat(5, 1fr); /* Three columns in the grid */
@@ -267,7 +293,8 @@ li {
   align-items: center;
   /* background-color: #152530; */
   border-radius: 5px;
-  border:  #f3f7fe5a solid 0.5px;
+  border:  rgba(255, 255, 255, 0.3) solid 0.5px;
+  /* box-shadow: inset; */
   padding: 5px;
 }
 
@@ -282,52 +309,63 @@ li {
   margin-bottom: 5px;
 }
 
-.grid-mode .product-name, .grid-mode .product-quantity, .grid-mode .product-website {
-  font-weight: bold;
+.grid-mode .product-name {
+
   text-decoration: none;
   width: 100%;
   margin: 2%;
+  text-align: left;
 }
 
 .grid-mode .product-name {
   height: 6rem;
 }
 
-.grid-mode .product-website {
+.product-website {
   font-weight: normal;
   font-style: italic;
-}
-
-.price-and-notify-block {
-
-  display: flex; /* Display elements in a row */
-  align-items:center; /* Vertically align elements */
-}
-
-.price-and-notify-block .product-price {
-  margin-right: 70%; 
-}
-
-.price-and-notify-block label {
-  display: flex; /* Display label and checkbox in a row */
-  align-items: center; /* Vertically align elements within the label */
-}
-
-.price-and-notify-block label input[type="checkbox"] {
-  margin-left: 5px; /* Add margin between the checkbox and the bell icon */
-  transform: scale(2);
-}
-
-.grid-mode #priceHistoryButton {
+  text-align: left;
+  margin: 0px;
+  font-size: 0.6em;
   width: 40%;
-  margin: 2px;
-  padding: 2px;
+  height: 15%;
 }
 
-.grid-mode #deleteButton {
+.price-block {
+  width: 100%;
+  height: auto;
+  margin: 0px;
+  align-items: top;
+  padding: 0px;
+  justify-content: top;
+}
+
+.price-and-website {
+  display: flex;
+  justify-content: space-around;
+  align-items: top;
+}
+
+.price-block .product-price {
+  font-size: 0.7em;
+  font-weight: bold;
+  text-align: right;
+  justify-content: right;
+  margin-top: 0px;
+  margin-bottom: 0px;
   width: 40%;
-  margin: 2px;
-  padding: 2px;
+  height: 15%;
+}
+
+.product-quantity {
+  font-weight: normal;
+  font-style: italic;
+  font-size: 0.6em;
+  margin: 0px;
+  margin-bottom: 0.5em;
+  text-decoration: none;
+  width: 90%;
+  text-align: center;
 }
 
 .search-input {

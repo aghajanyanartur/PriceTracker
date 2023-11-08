@@ -50,7 +50,9 @@ public class WebScarperUtil {
 
             BigDecimal price = new BigDecimal(doc.getElementsByClass("a-offscreen").get(0).text().substring(1));
 
-            return new ProductData(name, imageUrl, price, url, "Amazon", "0", false, false);
+            var availability = doc.select("#availability").first().text().trim();
+
+            return new ProductData(name, imageUrl, price, url, "Amazon", availability, true, false);
 
         } catch (IOException e) {
             return null;

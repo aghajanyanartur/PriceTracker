@@ -1,0 +1,109 @@
+.login-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    background-image: url(https://img.freepik.com/free-vector/abstract-colorful-technology-dotted-wave-background_1035-17450.jpg);
+    background-size: cover;
+    padding: 20px;
+    box-sizing: border-box;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+}
+
+
+.login-form-container {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 2%;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+    max-width: 400px;
+    width: 100%;
+    height: 60%;
+    box-sizing: border-box;
+    margin-left: 60%;
+    margin-bottom: 0%;
+}
+
+.form-group {
+    margin-bottom: 30px;
+}
+
+.form-group label {
+    display: block;
+    color: rgb(255, 255, 255);
+    text-align: left;
+    font-style: italic;
+    font-size: 0.6em;
+    display: block;
+}
+
+.form-group input {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0);
+    border: transparent;
+    border-bottom: black 1px solid;
+    color: white;
+    font-size: medium;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+}
+
+.form-group input:focus {
+    outline: none;
+    border-bottom: #f2ff00 1px solid;
+}
+
+.login-button-container {
+    display: flex;
+    justify-content: space-around;
+    padding-top: 0px;
+    margin-top: 0px;
+}
+
+.login-button-container button {
+    width: 45%;
+    padding: 0.9em;
+    border: none;
+    border-radius: 2em;
+    background-color: #007bff;
+    color: white;
+    font-size: medium;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+button:hover {
+    background-color: #0056b3;
+    box-shadow: 0.2em 0.2em 0.2em rgba(255, 255, 255, 0.5);
+}
+
+.description {
+    width: 50%;
+    position: absolute;
+    top: 5%;
+    left: 7%;
+    z-index: -1;
+    border-radius: 1em;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding-bottom: 1%;
+}
+
+.description span {
+    font-size: 0.8em;
+}
+
+.homepage_image {
+    width: 50%;
+    position: absolute;
+    top: 40%;
+    left: 7%;
+    z-index: -1;
+    border-radius: 1em;
+}

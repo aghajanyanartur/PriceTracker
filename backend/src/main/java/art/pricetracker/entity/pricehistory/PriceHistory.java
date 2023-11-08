@@ -4,12 +4,16 @@ import art.pricetracker.entity.trackedproduct.TrackedProduct;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.jackson.Jacksonized;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 
 @Entity
-//@Data
+@Getter
+@Setter
 public class PriceHistory {
 
     @Id
@@ -36,5 +40,15 @@ public class PriceHistory {
     @PrePersist
     public void setScrapingTime() {
         this.scrapedAt = Instant.now();
+    }
+
+    @Override
+    public String toString() {
+        return "PriceHistory{" +
+                "id=" + id +
+                ", product=" + product +
+                ", price=" + price +
+                ", scrapedAt=" + scrapedAt +
+                '}';
     }
 }

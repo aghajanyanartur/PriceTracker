@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Login from './Login';
 import ProductList from './ProductList';
 import useFetchProducts from './useFetchProducts';
+import LoadingAnimation from './LoadingAnimation';
 
 function App() {
   // State variables
@@ -14,7 +15,7 @@ function App() {
   const [newProductUrl, setNewProductUrl] = useState('');
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showPriceHistory, setShowPriceHistory] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [sortOrder, setSortOrder] = useState({ method: 'ascending', field: 'currentPrice' });
   const [addedOrderSort, setAddedOrderSort] = useState(false);
   const [mode, setMode] = useState('grid');
@@ -33,6 +34,9 @@ function App() {
 
   // Event Handlers
   const handleAddProduct = async () => {
+
+    setIsLoading(true);
+
     try {
       const response = await fetch('/api/products', {
         method: 'POST',
@@ -46,6 +50,7 @@ function App() {
 
       if (!response.ok) {
         throw new Error('Error adding product');
+        setIsLoading(false);
       }
 
       const addedProduct = await response.json();
@@ -54,9 +59,10 @@ function App() {
 
       setNewProductUrl('');
       setShowAddForm(false);
-
+      setIsLoading(false);
       window.location.reload();
     } catch (error) {
+      setIsLoading(false);
       console.error('Error adding product:', error);
     }
   };
@@ -115,6 +121,7 @@ function App() {
     setHideButtonText(prevHideButtonText => prevHideButtonText === "Hide Unavailable" ? "Show Unavailable" : "Hide Unavailable");
   };
 
+  console.log('###########################App rendered');
   useFetchProducts();
 
   const filteredProducts = products.filter((product) => {
@@ -154,6 +161,8 @@ function App() {
           </form>
         </div>
       )}
+
+      {isLoading && <LoadingAnimation />}
 
       {showCustomProductForm && (
         <div className="add-product-form two-columns">
